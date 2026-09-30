@@ -32,6 +32,7 @@ coverage
 
 # team docs (research, plan, pitch script, event material): local + Claude Project only, not part of the submission
 docs/
+!docs/PITCH-VIDEO.md
 
 # private notes
 *.private.md

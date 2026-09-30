@@ -15,7 +15,7 @@ Five invented customers, no real data, no live AI agent.
 | Directory | What it is | Runs where |
 |---|---|---|
 | [`server/`](server/) | The engine (skills over the customers' data), the **emulated agent** the app talks to, the API, and the same screens as a web UI | Vercel, from this directory (project Root Directory = `server`) |
-| [`android/`](android/) | The phone app: a Trusted Web Activity wrapper that opens the server full screen as a native Android app; builds the APK | The phone |
+| [`android/`](android/) | The phone app: a native Android app (Kotlin + Compose) wrapper that opens the server full screen as a native Android app; builds the APK | The phone |
 
 The phone app contains no product logic; everything a customer sees is computed in `server/`. The web UI at the live URL is the same app without the APK, so it can be tried in any browser.
 
