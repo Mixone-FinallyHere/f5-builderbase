@@ -18,10 +18,14 @@ Requirements: JDK 17 and the Android SDK (build-tools 36.1.0, platform-tools). B
 
 ```bash
 cd android
-npx @bubblewrap/cli build --skipPwaValidation
+# ANDROID_HOME must point at the SDK; JAVA_HOME at a JDK 17
+./gradlew assembleRelease
+BT=$ANDROID_HOME/build-tools/36.1.0
+$BT/zipalign -f -p 4 app/build/outputs/apk/release/app-release-unsigned.apk aligned.apk
+$BT/apksigner sign --ks android.keystore --ks-key-alias android --out app-release-signed.apk aligned.apk
 ```
 
-Bubblewrap asks for the signing-key passwords, then writes `app-release-signed.apk` and `app-release-bundle.aab` in this folder. The signing key (`android.keystore`) is **not** in the repository; build with your own key or ask the team for the demo key.
+The Gradle wrapper is included. The signing key (`android.keystore`) is **not** in the repository; build with your own key (`keytool -genkeypair`) or ask the team for the demo key. If you change `twa-manifest.json`, regenerate the project with `npx @bubblewrap/cli update` before building.
 
 To point the app at another server (for example a Vercel preview), change `host` and `webManifestUrl` in `twa-manifest.json` and rebuild.
 
