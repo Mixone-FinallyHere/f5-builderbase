@@ -13,12 +13,20 @@ export default function Home() {
         <span className="font-display text-lg font-bold tracking-tight">
           F5 <span className="text-muted">-</span> Builderbase
         </span>
-        <a
-          href="https://github.com/WhiteChair/f5-builderbase"
-          className="rounded-full border border-border bg-surface px-4 py-2 text-sm text-muted transition hover:text-text"
-        >
-          GitHub
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="/slides"
+            className="rounded-full border border-border bg-surface px-4 py-2 text-sm text-muted transition hover:text-text"
+          >
+            Slides
+          </a>
+          <a
+            href="https://github.com/WhiteChair/f5-builderbase"
+            className="rounded-full border border-border bg-surface px-4 py-2 text-sm text-muted transition hover:text-text"
+          >
+            GitHub
+          </a>
+        </div>
       </nav>
 
       <section className="pt-20 pb-24 text-center">

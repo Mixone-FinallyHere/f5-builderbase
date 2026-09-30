@@ -29,3 +29,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 ::selection { background: var(--color-primary); color: white; }
+
+/* /slides: slide text is sized in cqw so it scales with the slide width */
+.stage { container-type: inline-size; }
+.stage-wrapper:fullscreen { background: var(--color-bg); }
+.stage-wrapper:fullscreen .stage { width: min(100vw, calc(100vh * 16 / 9)); border: 0; border-radius: 0; }
