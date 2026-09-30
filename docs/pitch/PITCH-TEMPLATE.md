@@ -1,6 +1,6 @@
 # F5 - Builderbase — Pitch Template
 
-Target: 3 minutes, 10 slides, one idea per slide. A 16:9 PowerPoint version in the palette from [DESIGN.md](./DESIGN.md) can be generated with `pip install python-pptx && python docs/build_pitch_deck.py` (outputs `F5-Builderbase-Pitch-Template.pptx`).
+Target: 3 minutes, 10 slides, one idea per slide. A 16:9 PowerPoint version in the palette from [DESIGN.md](../DESIGN.md) can be generated with `pip install python-pptx && python docs/pitch/build_pitch_deck.py` (outputs `F5-Builderbase-Pitch-Template.pptx`).
 
 | # | Slide | Goal | Fill in | Time |
 |---|---|---|---|---|

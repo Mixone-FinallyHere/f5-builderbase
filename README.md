@@ -28,12 +28,18 @@ Requires Node.js 20+. Copy `.env.example` to `.env.local` if you add environment
 ## Project structure
 
 ```
-app/            Next.js App Router (layout, page, global styles + design tokens)
-public/         Static assets
-docs/DESIGN.md              Colour palette, typography, AI design prompt
-docs/PITCH-TEMPLATE.md      Slide-by-slide pitch outline
-docs/build_pitch_deck.py    Generates the 16:9 pitch deck: `pip install python-pptx && python docs/build_pitch_deck.py`
+app/            Demo web app (Next.js App Router) — this is what Vercel deploys
+public/         Static assets for the demo app
+gcp/            Code that runs on Google Cloud (sponsor credits) — not deployed by Vercel
+docs/DESIGN.md                    Colour palette, typography, AI design prompt
+docs/hackathon/                   Event material: rules, judging criteria, our notes
+docs/pitch/PITCH-TEMPLATE.md      Slide-by-slide pitch outline
+docs/pitch/build_pitch_deck.py    Generates the 16:9 pitch deck: `pip install python-pptx && python docs/pitch/build_pitch_deck.py`
 ```
+
+### Deployment
+
+The repo is connected to the Vercel project `f5-builderbase` (team `ds-projects-430c4cf4`). Every push to `main` deploys to production at https://f5-builderbase.vercel.app; pull requests get preview URLs. Vercel builds only the Next.js app from the repo root (`app/`, `public/`); `docs/` and `gcp/` stay in the repo but are not part of the demo site.
 
 ## Design
 
@@ -59,7 +65,7 @@ To add collaborators: **Settings → Collaborators → Add people**.
 - [ ] Core feature / golden path working end-to-end
 - [ ] Deployed on Vercel, public URL verified in an incognito window
 - [ ] Demo script rehearsed + fallback video recorded
-- [ ] Pitch deck filled in (generate with `docs/build_pitch_deck.py`, see docs/PITCH-TEMPLATE.md)
+- [ ] Pitch deck filled in (generate with `docs/pitch/build_pitch_deck.py`, see docs/pitch/PITCH-TEMPLATE.md)
 - [ ] README updated with live URL, screenshots, and tagline
 - [ ] Submission form sent before the deadline
 
