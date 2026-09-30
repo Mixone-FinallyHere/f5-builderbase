@@ -29,3 +29,6 @@ yarn-error.log*
 coverage
 .idea
 .vscode
+
+# hackathon material: large PDFs (participants guide ~40 MB), keep local only
+docs/hackathon/*.pdf
