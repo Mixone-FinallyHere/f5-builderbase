@@ -32,3 +32,6 @@ coverage
 
 # hackathon material: large PDFs (participants guide ~40 MB), keep local only
 docs/hackathon/*.pdf
+
+# private team notes (credentials, invite/discount links): share via the Claude Project, not git
+*.private.md
