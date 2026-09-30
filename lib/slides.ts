@@ -61,8 +61,13 @@ export const SEED_DECK: Deck = {
   updatedAt: 0,
 };
 
+// Invisible control characters (e.g. pasted from PDFs) render as boxes; keep only \t and \n.
+const CONTROL_CHARS = /[\u0000-\u0008\u000B-\u001F\u007F-\u009F]/g;
+
 function str(v: unknown, max: number): string | null {
-  return typeof v === "string" && v.length <= max ? v : null;
+  if (typeof v !== "string" || v.length > max) return null;
+  // toWellFormed() replaces broken UTF-16 (half an emoji) with U+FFFD instead of storing garbage.
+  return v.toWellFormed().replace(CONTROL_CHARS, "");
 }
 
 function isSafeImageUrl(v: string): boolean {

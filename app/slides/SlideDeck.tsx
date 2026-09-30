@@ -20,7 +20,13 @@ function writeStored(value: string | null) {
   } catch {}
 }
 
-type Status = { kind: "info" | "error" | "ok"; text: string } | null;
+// HTTP headers only carry Latin-1, so a password like "contraseña€" would make fetch throw.
+// Percent-encode it; the server decodes it (lib/slides-server.ts).
+function encodePassword(value: string): string {
+  return encodeURIComponent(value);
+}
+
+type Status ={ kind: "info" | "error" | "ok"; text: string } | null;
 
 export default function SlideDeck() {
   const [deck, setDeck] = useState<Deck>(SEED_DECK); // last saved / loaded version
@@ -56,15 +62,20 @@ export default function SlideDeck() {
     }
   }, []);
 
+  // Read the #n deep link once. The ref matters: dev mode runs effects twice, and the
+  // second run would otherwise read back the "#1" that the effect below just wrote.
+  const hashRead = useRef(false);
   useEffect(() => {
     load();
+    setPassword(readStored());
+    if (hashRead.current) return;
+    hashRead.current = true;
     const n = parseInt(window.location.hash.slice(1), 10);
     if (n > 0) setIndex(n - 1);
-    setPassword(readStored());
   }, [load]);
 
   useEffect(() => {
-    history.replaceState(null, "", `#${index + 1}`);
+    if (hashRead.current) history.replaceState(null, "", `#${index + 1}`);
   }, [index]);
 
   useEffect(() => {
@@ -89,7 +100,7 @@ export default function SlideDeck() {
       try {
         const res = await fetch("/api/slides", {
           method: "PUT",
-          headers: { "Content-Type": "application/json", "x-edit-password": password },
+          headers: { "Content-Type": "application/json", "x-edit-password": encodePassword(password) },
           body: JSON.stringify({ deck: draft, baseUpdatedAt: deck.updatedAt, force }),
         });
         const data = await res.json();
@@ -120,7 +131,7 @@ export default function SlideDeck() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
         if (editing) {
           e.preventDefault();
           save();
@@ -146,15 +157,19 @@ export default function SlideDeck() {
 
   async function unlock(e: React.FormEvent) {
     e.preventDefault();
-    const res = await fetch("/api/slides/auth", { method: "POST", headers: { "x-edit-password": password } });
-    if (res.ok) {
-      writeStored(password);
-      setAskPassword(false);
-      setEditing(true);
-      setStatus(null);
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setStatus({ kind: "error", text: data.error ?? "Wrong password" });
+    try {
+      const res = await fetch("/api/slides/auth", { method: "POST", headers: { "x-edit-password": encodePassword(password) } });
+      if (res.ok) {
+        writeStored(password);
+        setAskPassword(false);
+        setEditing(true);
+        setStatus(null);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatus({ kind: "error", text: data.error ?? "Wrong password" });
+      }
+    } catch {
+      setStatus({ kind: "error", text: "Network error" });
     }
   }
 
@@ -257,7 +272,7 @@ export default function SlideDeck() {
               <li key={s.id}>
                 <button
                   onClick={() => setIndex(i)}
-                  className={`w-40 shrink-0 rounded-lg border px-3 py-2 text-left text-xs lg:w-full ${i === index ? "border-primary bg-surface-2" : "border-border bg-surface hover:bg-surface-2"}`}
+                  className={`w-40 shrink-0 rounded-lg border px-3 py-2 text-left text-xs [overflow-wrap:anywhere] lg:w-full ${i === index ? "border-primary bg-surface-2" : "border-border bg-surface hover:bg-surface-2"}`}
                 >
                   <span className="text-muted">{i + 1}.</span> {s.title || "Untitled"}
                 </button>
@@ -276,7 +291,7 @@ export default function SlideDeck() {
             <Button onClick={() => go(index + 1)} disabled={index === slides.length - 1}>Next →</Button>
           </div>
           {showNotes && (
-            <div className="rounded-card border border-border bg-surface p-4 text-sm whitespace-pre-wrap">
+            <div className="rounded-card border border-border bg-surface p-4 text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">
               {current.notes || <span className="text-muted">No speaker notes for this slide.</span>}
             </div>
           )}
@@ -361,10 +376,10 @@ function SlideView({ slide }: { slide: Slide }) {
   return (
     <div className="stage relative aspect-video w-full overflow-hidden rounded-card border border-border bg-surface">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_10%_0%,rgba(124,92,255,0.25),transparent),radial-gradient(50%_50%_at_100%_0%,rgba(45,226,196,0.12),transparent)]" />
-      <div className="relative flex h-full flex-col p-[6cqw]">
+      <div className="relative flex h-full flex-col p-[6cqw] [overflow-wrap:anywhere]">
         {slide.layout === "title" && (
           <div className="m-auto text-center">
-            <h1 className="font-display text-[6.5cqw] leading-[1.05] font-bold tracking-tight">{slide.title}</h1>
+            <h1 className="font-display text-[6.5cqw] leading-[1.12] font-bold tracking-tight">{slide.title}</h1>
             {slide.subtitle && <p className="mt-[2cqw] text-[2.2cqw] text-muted">{slide.subtitle}</p>}
             <div className="mx-auto mt-[3cqw] h-[0.5cqw] w-[8cqw] rounded-full bg-gradient-to-r from-primary to-secondary" />
           </div>
@@ -372,7 +387,7 @@ function SlideView({ slide }: { slide: Slide }) {
         {slide.layout === "statement" && (
           <div className="my-auto max-w-[85%]">
             {slide.subtitle && <p className="mb-[2cqw] text-[1.6cqw] uppercase tracking-[0.2em] text-secondary">{slide.subtitle}</p>}
-            <h1 className="font-display text-[5cqw] leading-[1.1] font-bold tracking-tight">{slide.title}</h1>
+            <h1 className="font-display text-[5cqw] leading-[1.15] font-bold tracking-tight">{slide.title}</h1>
           </div>
         )}
         {slide.layout === "content" && (

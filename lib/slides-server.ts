@@ -65,7 +65,11 @@ export async function checkPassword(req: Request): Promise<AuthResult> {
   const failures = (await db.get<number>(failKey)) ?? 0;
   if (failures >= MAX_FAILURES) return "locked";
 
-  const given = req.headers.get("x-edit-password") ?? "";
+  // The client percent-encodes the password so any character survives the header.
+  let given = "";
+  try {
+    given = decodeURIComponent(req.headers.get("x-edit-password") ?? "");
+  } catch {} // malformed encoding counts as a wrong password
   if (timingSafeEqual(digest(given), digest(expected))) return "ok";
 
   await db.multi().incr(failKey).expire(failKey, LOCKOUT_SECONDS).exec();

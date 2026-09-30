@@ -13,8 +13,8 @@
   --color-success: #3ddc97;
   --color-warn: #ffb020;
   --color-danger: #ff5c7a;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-emoji), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), var(--font-emoji), ui-sans-serif, system-ui, sans-serif;
   --radius-card: 16px;
 }
 
