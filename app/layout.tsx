@@ -10,10 +10,14 @@ const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grot
 const hand = Patrick_Hand({ weight: "400", subsets: ["latin"], variable: "--font-hand" });
 const emoji = Noto_Color_Emoji({ weight: "400", subsets: ["emoji"], variable: "--font-emoji", preload: false });
 
+export const viewport = { themeColor: "#0091d2", width: "device-width", initialScale: 1, viewportFit: "cover" as const };
+
 export const metadata: Metadata = {
   title: "Heads-Up by Kate",
   description: "Heads-Up: your bank warns you before things go wrong, and explains why.",
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: "/favicon.svg", apple: "/icon.svg" },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "KBC Mobile" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

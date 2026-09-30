@@ -8,6 +8,7 @@ import { GROUP_CONSENT, type ConsentLevel, type Customer, type Evidence, type Mo
 
 const eur = (n: number) => "€" + Math.round(n).toLocaleString("en-GB");
 const pct = (n: number) => n.toFixed(2).replace(/\.?0+$/, "") + "%";
+const ordinal = (n: number) => `${n}${[, "st", "nd", "rd"][(n % 100 >> 3) ^ 1 && n % 10] || "th"}`;
 const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
 function consentFor(evidence: Evidence[], override?: ConsentLevel): ConsentLevel {
@@ -250,13 +251,13 @@ export function cashflowWatcher(c: Customer): Moment[] {
       family: "cashflow",
       kind: "month-end-shortfall",
       title: `Your account dips ${eur(shortfall)} below zero on ${fmtDate(minDate.toISOString())}`,
-      summary: `Based on your usual payments, ${[...causes].join(" and ")} on the ${minDate.getUTCDate()}th take the balance to ${eur(min)}${lateInvoice ? `, before ${lateInvoice.source} pays on ${fmtDate(lateInvoice.expectedDate!)}` : ""}. Moving ${eur(shortfall)} from savings for two weeks avoids overdraft interest and a declined payment.`,
+      summary: `Based on your usual payments, ${[...causes].join(" and ")} on the ${ordinal(minDate.getUTCDate())} take the balance to ${eur(min)}${lateInvoice ? `, before ${lateInvoice.source} pays on ${fmtDate(lateInvoice.expectedDate!)}` : ""}. Moving ${eur(shortfall)} from savings for two weeks avoids overdraft interest and a declined payment.`,
       severity: 3,
       horizonDays: Math.max(daysUntil(minDate.toISOString().slice(0, 10)), 0),
       harmEUR: Math.round(shortfall * 0.012 + 12), // overdraft interest for two weeks + a declined-debit fee
       evidence: [
         { group: "B", field: "Balance", value: eur(c.accounts.balance) },
-        { group: "B", field: "Upcoming debits", value: c.accounts.recurring.map((r) => `${r.name} ${eur(r.amount)} (${r.dayOfMonth}th)`).join(", ") },
+        { group: "B", field: "Upcoming debits", value: c.accounts.recurring.map((r) => `${r.name} ${eur(r.amount)} (${ordinal(r.dayOfMonth)})`).join(", ") },
         ...(lateInvoice ? [{ group: "B" as const, field: "Expected inflow", value: `${eur(lateInvoice.amount)} from ${lateInvoice.source}, ${fmtDate(lateInvoice.expectedDate!)}` }] : []),
       ],
       options: [

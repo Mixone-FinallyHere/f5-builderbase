@@ -2,11 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { PersonaMeta } from "@/lib/engine/personas";
-import { CONSENT_LABELS, type ConsentLevel } from "@/lib/engine/types";
+import type { ConsentLevel, Group } from "@/lib/engine/types";
 import { AskBox } from "./AskBox";
-import { Card, StoryPlayer, type Me } from "./StoryPlayer";
-
-const LEVELS: ConsentLevel[] = [0, 1, 2, 3];
+import { KatePhone, type Me } from "./KatePhone";
+import { StoryPlayer } from "./StoryPlayer";
 
 export default function DemoApp() {
   const [personas, setPersonas] = useState<PersonaMeta[]>([]);
@@ -27,6 +26,14 @@ export default function DemoApp() {
   const setConsent = useCallback(
     async (level: ConsentLevel) => {
       const res = await fetch("/api/me", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ consent: level }) });
+      if (!res.ok) throw new Error("Couldn't update the dial");
+      return loadMe();
+    },
+    [loadMe],
+  );
+  const setGroups = useCallback(
+    async (groups: Group[]) => {
+      const res = await fetch("/api/me", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ groups }) });
       if (!res.ok) throw new Error("Couldn't update the dial");
       return loadMe();
     },
@@ -100,9 +107,14 @@ export default function DemoApp() {
       {loading && <p className="mt-6 text-sm text-muted">Running the watchers for this customer…</p>}
 
       <section className="mt-8">
-        {me && meta && mode === "story" && <StoryPlayer key={me.customer.id} persona={me.customer.id} me={me} onDial={setConsent} />}
+        {me && meta && mode === "story" && <StoryPlayer key={me.customer.id} persona={me.customer.id} me={me} onLevel={setConsent} onGroups={setGroups} />}
         {me && meta && mode === "explore" && exploreMe && (
-          <Explore me={exploreMe} onDial={async (l) => { const v = await setConsent(l); if (v) setExploreMe(v); }} />
+          <Explore
+            key={me.customer.id}
+            me={exploreMe}
+            onLevel={async (l) => { const v = await setConsent(l); if (v) setExploreMe(v); return v; }}
+            onGroups={async (g) => { const v = await setGroups(g); if (v) setExploreMe(v); return v; }}
+          />
         )}
         {!me && !loading && (
           <div className="rounded-card border border-dashed border-border p-6 text-sm text-muted">
@@ -118,41 +130,34 @@ export default function DemoApp() {
   );
 }
 
-function Explore({ me, onDial }: { me: Me; onDial: (l: ConsentLevel) => Promise<void> }) {
+function Explore({ me, onLevel, onGroups }: { me: Me; onLevel: (l: ConsentLevel) => Promise<unknown>; onGroups: (g: Group[]) => Promise<unknown> }) {
+  const [chosen, setChosen] = useState<Record<string, number>>({});
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
       <div className="space-y-4">
-        <div className="rounded-card border border-border bg-surface p-5">
-          <p className="text-xs uppercase tracking-[0.2em] text-secondary">What may Kate notice?</p>
-          <div className="mt-3 space-y-2">
-            {LEVELS.map((l) => (
-              <label key={l} className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-sm ${me.consent === l ? "border-primary bg-surface-2" : "border-border"}`}>
-                <input type="radio" name="consent" checked={me.consent === l} onChange={() => onDial(l)} className="mt-1" />
-                <span>
-                  <span className="block font-medium">{l}. {CONSENT_LABELS[l]}</span>
-                </span>
-              </label>
-            ))}
-          </div>
-          <div className="mt-4 text-sm text-muted">
-            {me.hiddenByConsent.length ? (
-              <>
-                <p>Held back at this level:</p>
-                <ul className="mt-1 list-disc pl-5">
-                  {me.hiddenByConsent.map((h) => (
-                    <li key={h.id}>{h.title} <span className="text-muted/70">(needs level {h.requiredConsent})</span></li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p>Everything the engine found is shown.</p>
-            )}
-            {me.overflow > 0 && <p className="mt-2">{me.overflow} more, ranked below the cap of 4.</p>}
-          </div>
+        <div className="rounded-card border border-border bg-surface p-5 text-sm text-muted">
+          <p className="text-xs uppercase tracking-[0.2em] text-secondary">Free explore</p>
+          <p className="mt-2">Everything the engine found for {me.customer.name}, live. Tap options, ask Kate why (type or talk), open the Profile tab to see what she knows, or the Dial tab to switch data groups on and off.</p>
+          <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+            <dt>Watchers run</dt>
+            <dd className="text-text">8, on data the bank already holds</dd>
+            <dt>Shown</dt>
+            <dd className="text-text">{me.moments.length} (cap 4, harm first)</dd>
+            <dt>Held back by the dial</dt>
+            <dd className="text-text">{me.hiddenByConsent.length}</dd>
+            <dt>Data groups on</dt>
+            <dd className="text-text">{me.groups.join(" ")}</dd>
+          </dl>
         </div>
         <div className="rounded-card border border-border bg-surface p-5 text-sm text-muted">
-          <p className="text-xs uppercase tracking-[0.2em] text-secondary">Behind the screen</p>
-          <p className="mt-2">8 watchers ran on data the bank already holds. {me.moments.length} shown, harm first, cap 4.</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-secondary">Try asking Kate</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5">
+            <li>“Why do you think that?”</li>
+            <li>“Cancel the payment” / “Move it from savings”</li>
+            <li>“What do you know about me?”</li>
+            <li>“Set the dial to 1” / “Stop noticing my payments”</li>
+            <li>“Book my adviser”</li>
+          </ul>
         </div>
       </div>
       <div className="flex justify-center">
@@ -162,23 +167,15 @@ function Explore({ me, onDial }: { me: Me; onDial: (l: ConsentLevel) => Promise<
             <span className="rounded-full bg-slate-100 px-2 py-0.5">KBC Mobile · concept</span>
             <span>●●●</span>
           </div>
-          <div className="flex h-[calc(100%-1.6rem)] flex-col">
-            <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-600 font-display font-bold text-white">K</div>
-              <div>
-                <p className="text-sm font-semibold text-slate-900">Kate</p>
-                <p className="text-xs text-slate-500">heads-up · {me.consentLabel}</p>
-              </div>
-            </div>
-            <div className="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-3">
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-white px-3 py-2 text-sm text-slate-800 shadow-sm">
-                Hi {me.customer.name}. {me.moments.length === 0 ? "Nothing needs your attention right now." : `${me.moments.length} thing${me.moments.length > 1 ? "s" : ""} worth a look before ${me.moments.length > 1 ? "they become problems" : "it becomes a problem"}.`}
-              </div>
-              {me.moments.map((m) => (
-                <Card key={m.id} m={m} live={false} />
-              ))}
-            </div>
-          </div>
+          <KatePhone
+            me={me}
+            cards={me.moments}
+            greeting={`Hi ${me.customer.name}. ${me.moments.length === 0 ? "Nothing needs your attention right now." : `${me.moments.length} thing${me.moments.length > 1 ? "s" : ""} worth a look before ${me.moments.length > 1 ? "they become problems" : "it becomes a problem"}.`}`}
+            chosen={chosen}
+            onChoose={(kind, option) => setChosen((c) => ({ ...c, [kind]: option }))}
+            onLevel={onLevel}
+            onGroups={onGroups}
+          />
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
-import type { ConsentLevel } from "./engine/types";
+import type { ConsentLevel, Group } from "./engine/types";
 
 export const SESSION_COOKIE = "ka_session";
 const MAX_AGE = 60 * 60 * 8;
@@ -12,6 +12,7 @@ const MAX_AGE = 60 * 60 * 8;
 export interface Session {
   persona: string;
   consent: ConsentLevel;
+  groups?: Group[]; // explicit per-group choice; absent = the level's preset
   iat: number;
 }
 
@@ -39,6 +40,7 @@ export function decodeSession(token: string | undefined): Session | null {
   try {
     const s = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as Session;
     if (typeof s.persona !== "string" || ![0, 1, 2, 3].includes(s.consent) || Date.now() / 1000 - s.iat > MAX_AGE) return null;
+    if (s.groups !== undefined && (!Array.isArray(s.groups) || s.groups.some((g) => typeof g !== "string" || g.length !== 1))) return null;
     return s;
   } catch {
     return null;

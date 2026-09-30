@@ -57,3 +57,7 @@ body {
 @keyframes dots { 0% { content: ""; } 33% { content: "."; } 66% { content: ".."; } 100% { content: "..."; } }
 .dots::after { content: "…"; display: inline-block; width: 1.2em; animation: dots 1s steps(1, end) infinite; }
 @media (prefers-reduced-motion: reduce) { .phone-shell, .notify, .card-in, .signal-chip, .tap { transition: none; animation: none; } }
+
+/* KBC Mobile look for the demo phone */
+.kbc-header { background: linear-gradient(135deg, #0091d2 0%, #00a9e0 100%); }
+.kate-avatar { background: linear-gradient(135deg, #00b4e6 0%, #6f3ff5 100%); box-shadow: 0 2px 8px rgba(0, 145, 210, 0.35); }

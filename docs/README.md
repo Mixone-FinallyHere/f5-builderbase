@@ -10,6 +10,8 @@ Upload **every Markdown file in this folder and its subfolders** to the Project'
 |---|---|---|
 | `hackathon/PROJECT-CONTEXT.private.md` | Team, setup, tools and their status, rules, submission, workflow | No (private) |
 | `hackathon/KBC-PROBLEM-RESEARCH.private.md` | Deep, sourced analysis of KBC's customer problems. **Problems only, no solutions**, so the Project's proposals aren't anchored | No (private) |
+| `hackathon/PLAN.private.md` | The chosen direction (Heads-Up): thesis, ROI, engine, personas, demo | No (private) |
+| `hackathon/DATA-AND-INFERENCE.private.md` | **How we use the data points**: the eight groups with the evidence behind each, every moment as a formula, the scam score, expected-harm maths, and the granular opt-out | No (private) |
 | `hackathon/SUMMARY.md` | Digest of the official Participants Guide | Yes |
 | `DESIGN.md` | Visual design language for the demo and slides | Yes |
 | `pitch/PITCH-TEMPLATE.md` | 10-slide, 3-minute pitch structure | Yes |
