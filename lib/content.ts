@@ -5,10 +5,10 @@ export type Source = { label: string; url: string };
 
 export const project = {
   // TODO: replace once the idea is chosen.
-  name: "F5 - Builderbase",
+  name: "Kate Ahead",
   headline: "KBC has the world's best banking app.",
   headlineAccent: "Its customers still feel unheard.",
-  tagline: "Our one-line promise goes here: who it's for and what changes for them.",
+  tagline: "Kate, ahead of you: the bank acts before things go wrong, and explains why. Built on data KBC already holds.",
   challenge: "KBC challenge · Tectonic Hackathon 2026",
   repo: "https://github.com/WhiteChair/f5-builderbase",
 };
@@ -99,9 +99,9 @@ export const segments: Array<{ name: string; pain: string }> = [
 
 // Placeholder until the idea is chosen: what the product does, in three steps.
 export const solutionSteps = [
-  { title: "Step 1", body: "What the customer experiences first." },
-  { title: "Step 2", body: "What our product understands or does." },
-  { title: "Step 3", body: "The outcome, and why it builds trust." },
+  { title: "Signals the bank already has", body: "ID expiry dates, policies, salary and rent patterns, a notary deposit, a new device after an SMS link. Eight data groups, nothing new collected." },
+  { title: "Watchers turn them into moments", body: "Rules and small models detect what is about to go wrong or could be better: a block, a premium shock, a shortfall, a scam, a gap in cover. Each moment carries its evidence." },
+  { title: "Kate acts early and explains", body: "A consent dial decides what Kate may notice. Gemini phrases the message from checked facts. The same moment reaches the app, the adviser or a phone call." },
 ];
 
 export const team: Array<{ name: string; role: string }> = [

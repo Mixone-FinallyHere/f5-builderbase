@@ -15,7 +15,8 @@ export default function Home() {
         <div className="flex flex-wrap items-center gap-1">
           <a href="#problem" className={navLink}>Problem</a>
           <a href="#solution" className={navLink}>Solution</a>
-          <a href="#demo" className={navLink}>Demo</a>
+          <a href="/demo" className={navLink}>Live demo</a>
+          <a href="#demo" className={navLink}>Video</a>
           <a href="/slides" className={navLink}>Slides</a>
           <a href={project.repo} className="ml-1 rounded-full border border-border bg-surface px-4 py-1.5 text-sm text-muted transition hover:text-text">
             GitHub
@@ -35,8 +36,8 @@ export default function Home() {
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">{project.tagline}</p>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <a className="rounded-xl bg-primary px-6 py-3 font-medium text-white shadow-[0_0_40px_-8px_#7c5cff] transition hover:brightness-110" href="#demo">
-            Watch the demo
+          <a className="rounded-xl bg-primary px-6 py-3 font-medium text-white shadow-[0_0_40px_-8px_#7c5cff] transition hover:brightness-110" href="/demo">
+            Try the live demo
           </a>
           <a className="rounded-xl border border-border bg-surface px-6 py-3 font-medium transition hover:bg-surface-2" href="/slides">
             See the pitch
@@ -87,11 +88,15 @@ export default function Home() {
       </section>
 
       <section id="solution" className="mt-24 scroll-mt-8">
-        <SectionHeading kicker="Our solution" title="Coming soon" />
-        <p className="mt-3 max-w-2xl text-muted">What we built, which of the problems above it tackles, and how it scales to millions of customers.</p>
+        <SectionHeading kicker="Our solution" title="Kate Ahead: prevention on data KBC already holds" />
+        <p className="mt-3 max-w-2xl text-muted">Five customers, ten moments, one engine. Try it live: pick a customer, open their Kate, turn the consent dial.</p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a href="/demo" className="rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:brightness-110">Open the phone demo</a>
+          <a href="/scale" className="rounded-xl border border-border bg-surface px-5 py-2.5 text-sm font-medium transition hover:bg-surface-2">See it at scale</a>
+        </div>
         <ol className="mt-8 grid gap-4 md:grid-cols-3">
           {solutionSteps.map((s, i) => (
-            <li key={i} className="rounded-card border border-dashed border-border p-6">
+            <li key={i} className="rounded-card border border-border bg-surface p-6">
               <span className="font-display text-4xl font-bold text-primary">0{i + 1}</span>
               <p className="font-display mt-3 text-lg font-semibold">{s.title}</p>
               <p className="mt-1 text-sm text-muted">{s.body}</p>
