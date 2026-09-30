@@ -2,7 +2,9 @@
 
 > Your bank warns you before things go wrong, on data it already holds, and explains why.
 
-A concept for the **KBC challenge** at the Tectonic Hackathon 2026 (team F5): personalisation that acts *for* the customer ahead of time, instead of selling to them after the fact.
+A concept for the **KBC challenge** at the Tectonic Hackathon 2026 (team F5).
+
+**What it adds:** a layer that uses data points the bank already holds, but doesn't yet turn into determinations for the customer. Eight groups of data (balances and recurring payments, policies and their dates, ID expiry, a notary deposit, a new device…), a small set of formulas a regulator can recompute by hand, a consent switch per data group, and a message that shows its evidence. The result: the app tells a customer what is about to go wrong and the cheapest fix, with a lead time of days to months, and says which data it used.
 
 **Live demo:** https://f5-builderbase.vercel.app · **Repo:** https://github.com/WhiteChair/f5-builderbase
 
