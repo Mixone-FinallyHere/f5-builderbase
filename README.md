@@ -37,6 +37,12 @@ docs/pitch/PITCH-TEMPLATE.md      Slide-by-slide pitch outline
 docs/pitch/build_pitch_deck.py    Generates the 16:9 pitch deck: `pip install python-pptx && python docs/pitch/build_pitch_deck.py`
 ```
 
+### Contributing
+
+Day-to-day work happens in the fork [Mixone-FinallyHere/f5-builderbase](https://github.com/Mixone-FinallyHere/f5-builderbase), which is the repo connected to Aikido. Changes reach this repo through pull requests: branch → push to the fork → PR into `WhiteChair/f5-builderbase:main`.
+
+**We submit this repo (WhiteChair) to Builderbase; Aikido scans the fork.** Always sync the fork before an Aikido scan, especially the final "after" scan, so the screenshots match the submitted code: `gh repo sync Mixone-FinallyHere/f5-builderbase`.
+
 ### Deployment
 
 The repo is connected to the Vercel project `f5-builderbase` (team `ds-projects-430c4cf4`). Every push to `main` deploys to production at https://f5-builderbase.vercel.app; pull requests get preview URLs. Vercel builds only the Next.js app from the repo root (`app/`, `public/`); `docs/` and `gcp/` stay in the repo but are not part of the demo site.

@@ -56,7 +56,7 @@ One team member fills in the project **Overview** in Builderbase. All fields are
 |---|---|---|
 | Short description | Description of the solution | To do |
 | Video link | Link to our original demo video, **under 3 minutes**, explaining the solution | To do |
-| GitHub repository link | https://github.com/WhiteChair/f5-builderbase (must stay **public**) | Ready |
+| GitHub repository link | https://github.com/WhiteChair/f5-builderbase (the base repo, not the fork; must stay **public**) | Ready |
 | Aikido screenshots (upload) | Screenshots of the Aikido platform, **before and after** fixes | To do |
 
 **The guide gives no deadline.** Check Builderbase for the exact time.
@@ -71,7 +71,7 @@ Aikido's **AI Code Audit** reasons about the code's logic, not just known signat
 
 Process:
 1. Create an account via the event's Aikido discount link (see the private context file or the PDF), using "Continue with GitHub".
-2. Connect this repo.
+2. Connect the repo. For us that's the fork `Mixone-FinallyHere/f5-builderbase`; sync it with WhiteChair `main` before every scan so the results match the submitted repo.
 3. Run the AI Code Audit (credits provided). This is the **baseline** scan: **screenshot it**.
 4. Fix the issues and mark them resolved.
 5. The score is based on **remaining** issues. Screenshot the after state.
