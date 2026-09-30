@@ -5,10 +5,10 @@ export type Source = { label: string; url: string };
 
 export const project = {
   // TODO: replace once the idea is chosen.
-  name: "Kate Ahead",
+  name: "Heads-Up",
   headline: "KBC has the world's best banking app.",
   headlineAccent: "Its customers still feel unheard.",
-  tagline: "Kate, ahead of you: the bank acts before things go wrong, and explains why. Built on data KBC already holds.",
+  tagline: "Heads-Up by Kate: your bank warns you before things go wrong, and explains why. Built on data KBC already holds.",
   challenge: "KBC challenge · Tectonic Hackathon 2026",
   repo: "https://github.com/WhiteChair/f5-builderbase",
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { scaleReport } from "@/lib/engine/population";
 import { CONSENT_LABELS, type ConsentLevel } from "@/lib/engine/types";
 
-export const metadata: Metadata = { title: "Scale view · Kate Ahead", description: "What Kate Ahead finds across a synthetic population, today." };
+export const metadata: Metadata = { title: "Scale view · Heads-Up", description: "What Heads-Up finds across a synthetic population, today." };
 export const revalidate = 3600;
 
 const eur = (n: number) => "€" + Math.round(n).toLocaleString("en-GB");
@@ -18,7 +18,7 @@ export default function ScalePage() {
     <main className="mx-auto max-w-6xl px-4 pb-24 md:px-6">
       <header className="flex flex-wrap items-center justify-between gap-3 py-6">
         <a href="/" className="font-display text-lg font-bold tracking-tight">
-          Kate <span className="text-secondary">Ahead</span> <span className="font-normal text-muted">/ today at KBC</span>
+          Heads-<span className="text-secondary">Up</span> <span className="font-normal text-muted">/ today at KBC</span>
         </a>
         <nav className="flex gap-1 text-sm">
           <a href="/demo" className="rounded-full px-3 py-1.5 text-muted hover:text-text">Phone demo</a>

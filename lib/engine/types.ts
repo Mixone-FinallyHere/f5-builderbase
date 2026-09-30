@@ -1,4 +1,4 @@
-// Data model for the Kate Ahead engine.
+// Data model for the Heads-Up engine.
 // Every field here is something a bank-insurer like KBC already stores for operations or compliance.
 // The letters A–H are the data groups from docs/hackathon/PLAN.private.md; each moment cites the groups it used.
 

@@ -88,7 +88,7 @@ export default function Home() {
       </section>
 
       <section id="solution" className="mt-24 scroll-mt-8">
-        <SectionHeading kicker="Our solution" title="Kate Ahead: prevention on data KBC already holds" />
+        <SectionHeading kicker="Our solution" title="Heads-Up: prevention on data KBC already holds" />
         <p className="mt-3 max-w-2xl text-muted">Five customers, ten moments, one engine. Try it live: pick a customer, open their Kate, turn the consent dial.</p>
         <div className="mt-6 flex flex-wrap gap-3">
           <a href="/demo" className="rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:brightness-110">Open the phone demo</a>

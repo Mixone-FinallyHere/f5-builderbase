@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import DemoApp from "./DemoApp";
 
 export const metadata: Metadata = {
-  title: "Demo · Kate Ahead",
-  description: "Kate Ahead: the bank acts before things go wrong, and explains why. Five customers, ten moments.",
+  title: "Live demo · Heads-Up",
+  description: "Heads-Up by Kate: five customers, ten moments, before they become problems.",
 };
 
 export default function DemoPage() {
