@@ -35,3 +35,6 @@ docs/hackathon/*.pdf
 
 # private team notes (credentials, invite/discount links): share via the Claude Project, not git
 *.private.md
+
+# personal notes (idea shortlists etc.): not for the repo, not for the Claude Project upload
+private-notes/

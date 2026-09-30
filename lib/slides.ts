@@ -42,18 +42,20 @@ export function newSlide(layout: Layout = "content"): Slide {
   };
 }
 
-// Starter content, from docs/pitch/PITCH-TEMPLATE.md. Shown until the first save.
+// Starter content: the pitch structure from docs/pitch/PITCH-TEMPLATE.md with the KBC problem slides
+// filled in from our research (sources in the speaker notes). Shown until the first save.
 const seed: Array<Omit<Slide, "id" | "image">> = [
-  { layout: "title", title: "F5 - Builderbase", subtitle: "One-line promise goes here · Tectonic Hackathon 2026", bullets: [], notes: "0:05. Name and one-line promise." },
-  { layout: "statement", title: "A surprising stat, a question, or a one-sentence story.", subtitle: "Hook", bullets: [], notes: "0:15. Make them care in 10 seconds." },
-  { layout: "content", title: "The problem", subtitle: "", bullets: ["Who hurts, and how often", "What it costs in time or money", "“One real quote from a user”"], notes: "0:20. Make the pain concrete." },
-  { layout: "content", title: "The solution", subtitle: "X helps [who] do [what] by [how]", bullets: ["Key benefit one", "Key benefit two", "Key benefit three"], notes: "0:20. Say what it is, plainly." },
-  { layout: "content", title: "Demo", subtitle: "The golden path in 3 steps", bullets: ["Step 1: action", "Step 2: action", "Step 3: result / wow moment"], notes: "0:45. Show, don't tell. Have the fallback video ready." },
-  { layout: "content", title: "How it works", subtitle: "", bullets: ["Architecture and stack", "What we built tonight vs. reused", "The clever bit"], notes: "0:20. Earn technical credibility." },
-  { layout: "content", title: "Market", subtitle: "", bullets: ["Who pays", "TAM / SAM / SOM or user count", "Competitors and our edge"], notes: "0:15. Show it's worth building." },
-  { layout: "statement", title: "The shift that makes this possible today.", subtitle: "Why now", bullets: [], notes: "0:10. Tech, regulation or behaviour change." },
-  { layout: "content", title: "Team", subtitle: "", bullets: ["Name: role, one credential", "Name: role, one credential", "Name: role, one credential"], notes: "0:15. Who did what tonight." },
-  { layout: "title", title: "The ask", subtitle: "Feedback · pilot · intros  ·  f5-builderbase.vercel.app", bullets: [], notes: "0:15. Clear next step. Point to the live URL and repo." },
+  { layout: "title", title: "F5 - Builderbase", subtitle: "One-line promise goes here · KBC challenge · Tectonic Hackathon 2026", bullets: [], notes: "0:05. Name and one-line promise. Replace the name once the idea is chosen." },
+  { layout: "statement", title: "KBC has the world's best banking app. Half of its Belgian clients don't use it.", subtitle: "Hook", bullets: [], notes: "0:15. About 2.1M of 4.1M Belgian clients use KBC Mobile (KBC Annual Report 2025). The brief's '2.3M customers' is the number who have used Kate." },
+  { layout: "content", title: "Customers feel acted on, not helped", subtitle: "The problem", bullets: ["Accounts blocked and relationships ended by algorithms, rarely explained (+48% bank-initiated closures in 2024)", "Only 37.5% of justified fraud complaints get resolved, against 96% for everything else", "Fees up again in 2026, while €303bn in savings earns about 0.6%", "1M+ Belgians already moved everyday banking to Revolut"], notes: "0:20. Sources: Ombudsfin annual report 2024; Test-Aankoop 2025; NBB 2025; Belga 2026. Pick the one pain our solution fixes and lead with it." },
+  { layout: "content", title: "It hits different people at different moments", subtitle: "Who it hurts", bullets: ["Young adults: everyday money lives in a second app", "Home buyers: 2 in 3 don't understand energy-label rules and premiums", "Seniors: 35% of over-75s have never been online, while branches and ATMs recede", "Stretched households: 38% expect trouble making ends meet"], notes: "Optional slide: keep only the segment our demo persona belongs to. Sources: BNP Paribas Fortis 2025, KBC/Ipsos 2025, Statbel 2024 and 2025." },
+  { layout: "content", title: "The solution", subtitle: "[Name] helps [who] do [what] by [how]", bullets: ["Key benefit one", "Key benefit two", "Key benefit three"], notes: "0:20. Say what it is, plainly. Tie each benefit to a problem on slide 3." },
+  { layout: "content", title: "Demo", subtitle: "One customer, one moment", bullets: ["Step 1: the moment of friction", "Step 2: what our product does", "Step 3: the outcome"], notes: "0:45. Show, don't tell. Have the fallback video ready (it's embedded on the landing page)." },
+  { layout: "content", title: "How it works", subtitle: "", bullets: ["Signals in, explanation out: architecture and stack", "How it scales to millions of customers", "Secure by design: audited with Aikido"], notes: "0:20. Earn technical credibility. Mention Google Cloud / Gemini if used." },
+  { layout: "content", title: "Why it matters for KBC", subtitle: "", bullets: ["Digital sales are at 57% against a 65% target; the NPS ranking has been stuck at top 3 against a top-2 target", "Kate creates 656k leads a quarter, but only about 14% convert", "Fraud costs now land on the bank: courts and new EU rules shift the burden of proof"], notes: "0:15. Sources: KBC Annual Report 2025; KBC newsroom (Kate, five years); VRT 2026 on the Cassation ruling; PSR agreement Nov 2025." },
+  { layout: "statement", title: "Courts, EU law and neobanks are changing what customers can expect from their bank.", subtitle: "Why now", bullets: [], notes: "0:10. GDPR Art. 22 (SCHUFA), AI Act transparency from Aug 2026, PSR burden of proof, Trade Republic with a Belgian IBAN (Sep 2026). Rewrite if our solution points elsewhere." },
+  { layout: "content", title: "Team F5", subtitle: "", bullets: ["Name: role, one credential", "Name: role, one credential", "Name: role, one credential"], notes: "0:15. Who did what tonight." },
+  { layout: "title", title: "The ask", subtitle: "Feedback · pilot with KBC · f5-builderbase.vercel.app", bullets: [], notes: "0:15. Clear next step. Point to the live URL and repo." },
 ];
 
 export const SEED_DECK: Deck = {
