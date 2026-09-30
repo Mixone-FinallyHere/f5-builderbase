@@ -5,6 +5,7 @@ import type { Profile } from "@/lib/engine/profile";
 import { CONSENT_LABELS, GROUP_NAMES, type ConsentLevel, type ExplainedMoment, type Group } from "@/lib/engine/types";
 import { CaptureSheet } from "./CaptureSheet";
 import { Composer } from "./Composer";
+import { MoreView } from "./MoreView";
 import { ProfileView } from "./ProfileView";
 
 export type Me = {
@@ -21,7 +22,7 @@ export type Me = {
 };
 
 type Bubble = { who: "kate" | "me" | "system"; text: string };
-type Tab = "overview" | "kate" | "profile" | "consent";
+export type Tab = "overview" | "kate" | "profile" | "consent" | "more";
 
 const ALWAYS_ON: Group[] = ["A", "G"];
 const ALL: Group[] = ["A", "B", "C", "D", "E", "F", "G", "H"];
@@ -39,6 +40,10 @@ export function KatePhone({
   onLevel,
   onGroups,
   note,
+  tab: tabProp,
+  onTabChange,
+  overviewExtra,
+  banner,
 }: {
   me: Me;
   cards: ExplainedMoment[];
@@ -50,8 +55,17 @@ export function KatePhone({
   onLevel: (level: ConsentLevel) => Promise<unknown>;
   onGroups: (groups: Group[]) => Promise<unknown>;
   note?: string;
+  tab?: Tab;
+  onTabChange?: (t: Tab) => void;
+  overviewExtra?: React.ReactNode;
+  banner?: React.ReactNode;
 }) {
-  const [tab, setTab] = useState<Tab>("kate");
+  const [tabState, setTabState] = useState<Tab>("kate");
+  const tab = tabProp ?? tabState;
+  const setTab = (t: Tab) => {
+    setTabState(t);
+    onTabChange?.(t);
+  };
   const [chat, setChat] = useState<Bubble[]>([]);
   const [busy, setBusy] = useState(false);
   const [capture, setCapture] = useState<{ title: string; hint: string; kind: string; option: number } | null>(null);
@@ -127,19 +141,20 @@ export function KatePhone({
 
   return (
     <div className="relative flex h-[calc(100%-1.6rem)] flex-col">
+      {banner}
       <div className="kbc-header flex items-center gap-3 px-4 py-3 text-white">
         {tab === "kate" ? (
           <>
             <div className="kate-avatar flex h-9 w-9 items-center justify-center rounded-full font-display text-lg font-bold text-white">K</div>
             <div className="flex-1">
               <p className="text-sm font-semibold">Kate</p>
-              <p className="text-xs text-white/80">Heads-up · {me.consentLabel}</p>
+              <p className="text-xs text-white/80">Kate Ahead · {me.consentLabel}</p>
             </div>
           </>
         ) : (
           <div className="flex-1">
             <p className="text-xs text-white/80">KBC Mobile</p>
-            <p className="text-sm font-semibold">{tab === "overview" ? "Overzicht" : tab === "profile" ? "Mijn profiel" : "Privacy & gegevens"}</p>
+            <p className="text-sm font-semibold">{tab === "overview" ? "Overzicht" : tab === "profile" ? "Mijn profiel" : tab === "consent" ? "Privacy & gegevens" : "Meer"}</p>
           </div>
         )}
         <span className="rounded-md bg-white px-1.5 py-0.5 font-display text-[11px] font-black tracking-tight text-[#0091d2]">KBC</span>
@@ -148,6 +163,7 @@ export function KatePhone({
       {tab === "overview" && (
         <div className="flex-1 overflow-y-auto bg-[#eef3f6] p-3 text-slate-900">
           <p className="px-1 text-lg font-semibold">{greetingWord()}, {me.customer.name}</p>
+          {overviewExtra}
           <div className="mt-3 rounded-2xl bg-white p-4 shadow-sm">
             <p className="text-[11px] uppercase tracking-wider text-slate-500">Zichtrekening · {me.accounts.tier === "plus" ? "Plusrekening" : me.accounts.tier === "basic" ? "Basisrekening" : "Zichtrekening"}</p>
             <p className="mt-1 text-2xl font-semibold">{eur(me.accounts.balance)}</p>
@@ -160,8 +176,8 @@ export function KatePhone({
           <button onClick={() => setTab("kate")} className="mt-2 flex w-full items-center gap-3 rounded-2xl bg-white p-4 text-left shadow-sm">
             <div className="kate-avatar flex h-10 w-10 items-center justify-center rounded-full font-display text-lg font-bold text-white">K</div>
             <div className="flex-1">
-              <p className="text-sm font-semibold">Kate heeft {openCount(cards, chosen)} heads-up{openCount(cards, chosen) === 1 ? "" : "s"} voor je</p>
-              <p className="text-xs text-slate-500">Before they become problems</p>
+              <p className="text-sm font-semibold">Kate Ahead</p>
+              <p className="text-xs text-slate-500">{openCount(cards, chosen) > 0 ? `${openCount(cards, chosen)} heads-up${openCount(cards, chosen) === 1 ? "" : "s"} voor je` : "Warns you before things go wrong"}</p>
             </div>
             <span className="text-slate-400">›</span>
           </button>
@@ -185,13 +201,15 @@ export function KatePhone({
         <ProfileView profile={me.profile} consent={me.consent} consentLabel={me.consentLabel} acted={cards.filter((m) => chosen[m.kind] !== undefined).map((m) => m.title)} openCount={cards.filter((m) => chosen[m.kind] === undefined).length} onDial={() => setTab("consent")} />
       )}
       {tab === "consent" && <ConsentView me={me} onLevel={onLevel} onGroups={onGroups} />}
+      {tab === "more" && <MoreView />}
 
-      <nav className="grid grid-cols-4 border-t border-slate-200 bg-white py-1.5 text-center text-[10px] text-slate-500">
+      <nav className="grid grid-cols-5 border-t border-slate-200 bg-white py-1.5 text-center text-[10px] text-slate-500">
         {([
           ["overview", "Overzicht", "M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"],
           ["kate", "Kate", "M4 5h16v10H8l-4 4z"],
           ["profile", "Profiel", "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-8 8a8 8 0 0 1 16 0z"],
           ["consent", "Privacy", "M12 2l8 3v6c0 5-3.5 9.5-8 11-4.5-1.5-8-6-8-11V5z"],
+          ["more", "Meer", "M5 12h.01M12 12h.01M19 12h.01"],
         ] as Array<[Tab, string, string]>).map(([t, label, d]) => (
           <button key={t} onClick={() => setTab(t)} className={`flex flex-col items-center gap-0.5 ${tab === t ? "font-semibold text-[#0091d2]" : ""}`}>
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"><path d={d} /></svg>

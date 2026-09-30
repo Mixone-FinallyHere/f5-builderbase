@@ -30,33 +30,17 @@ body {
 }
 ::selection { background: var(--color-primary); color: white; }
 
-/* /slides: slide text is sized in cqw so it scales with the slide width */
-.stage { container-type: inline-size; }
-.stage-wrapper:fullscreen { background: var(--color-bg); }
-.stage-wrapper:fullscreen .stage { width: min(100vw, calc(100vh * 16 / 9)); border: 0; border-radius: 0; }
 
-/* /demo story player */
-.comic svg { filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45)); transform: rotate(-0.6deg); }
-.comic-caption { margin-top: 1rem; font-family: var(--font-hand), cursive; font-size: 1.2rem; line-height: 1.35; }
-.phone-shell {
-  width: 100%; max-width: 390px; height: 780px; overflow: hidden; background: #fff;
-  border: 6px solid #1e293b; border-radius: 2.2rem;
-  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
-  transform: scale(0.9); opacity: 0.8;
-  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.9s, box-shadow 0.9s;
-}
-.phone-zoomed { transform: scale(1); opacity: 1; box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.35), 0 40px 100px -20px rgba(0, 0, 0, 0.8); }
+/* notification banner */
 @keyframes slide-down { from { transform: translateY(-140%); opacity: 0; } to { transform: none; opacity: 1; } }
 .notify { animation: slide-down 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 @keyframes card-in { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
 .card-in { animation: card-in 0.5s ease-out both; }
-@keyframes chip-in { from { transform: translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
-.signal-chip { animation: chip-in 0.5s ease-out both; }
 @keyframes tap { 0% { transform: scale(1); } 40% { transform: scale(0.96); } 100% { transform: scale(1); } }
 .tap { animation: tap 0.4s ease-out; }
 @keyframes dots { 0% { content: ""; } 33% { content: "."; } 66% { content: ".."; } 100% { content: "..."; } }
 .dots::after { content: "…"; display: inline-block; width: 1.2em; animation: dots 1s steps(1, end) infinite; }
-@media (prefers-reduced-motion: reduce) { .phone-shell, .notify, .card-in, .signal-chip, .tap { transition: none; animation: none; } }
+@media (prefers-reduced-motion: reduce) { .notify, .card-in, .tap { animation: none; } }
 
 /* KBC Mobile look for the demo phone */
 .kbc-header { background: linear-gradient(135deg, #0091d2 0%, #00a9e0 100%); }

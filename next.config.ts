@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
 
-// Content Security Policy: only our own scripts, plus the video hosts the demo section can embed.
+// Content Security Policy: only our own scripts and styles.
 // Next needs 'unsafe-inline' for its inline bootstrap scripts; dev mode also needs eval + websockets for hot reload.
 // vercel.live is Vercel's preview toolbar (preview deployments only).
 const csp = [
@@ -13,7 +13,7 @@ const csp = [
   "font-src 'self' data:",
   "media-src 'self' https: data: blob:",
   `connect-src 'self' https://vercel.live wss://ws-us3.pusher.com${isDev ? " ws: http://localhost:*" : ""}`,
-  "frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://www.loom.com https://vercel.live",
+  "frame-src https://vercel.live",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

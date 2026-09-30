@@ -1,29 +1,32 @@
-import { chat, chatEnabled, type ChatTurn } from "@/lib/chat";
+import { chat, type ChatTurn } from "@/lib/chat";
 import { gate, groupsForLevel, normaliseGroups } from "@/lib/engine/gate";
 import { buildPersonas } from "@/lib/engine/personas";
 import { runWatchers } from "@/lib/engine/watchers";
 import { readSession, writeSession } from "@/lib/session";
-import { redis } from "@/lib/slides-server";
 
 export const dynamic = "force-dynamic";
 
 const MAX_TEXT = 600;
 const MAX_HISTORY = 12;
-const RATE_LIMIT = 40; // per session per 10 minutes
+const RATE_LIMIT = 40; // messages per session per 10 minutes
+const WINDOW_MS = 10 * 60 * 1000;
+const hits = new Map<string, number[]>();
 
-// Talk to Kate. Persona and consent come from the session cookie only.
+function limited(key: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
+  recent.push(now);
+  hits.set(key, recent);
+  if (hits.size > 5_000) hits.clear();
+  return recent.length > RATE_LIMIT;
+}
+
+// Talk to Kate. Persona and consent come from the session cookie only; the text is validated and capped.
 export async function POST(req: Request) {
   const session = await readSession();
   const customer = session ? buildPersonas()[session.persona] : undefined;
   if (!session || !customer) return Response.json({ error: "Pick a customer first" }, { status: 401 });
-
-  const db = redis();
-  if (db) {
-    const key = `chat:rl:${session.persona}:${session.iat}`;
-    const hits = await db.incr(key);
-    if (hits === 1) await db.expire(key, 600);
-    if (hits > RATE_LIMIT) return Response.json({ error: "Kate needs a short break. Try again in a few minutes." }, { status: 429 });
-  }
+  if (limited(`${session.persona}:${session.iat}`)) return Response.json({ error: "Kate needs a short break. Try again in a few minutes." }, { status: 429 });
 
   let body: { text?: unknown; history?: unknown };
   try {
@@ -42,16 +45,7 @@ export async function POST(req: Request) {
 
   const groups = session.groups ? normaliseGroups(session.groups) : groupsForLevel(session.consent);
   const { visible, hiddenByConsent } = gate(customer, runWatchers(customer), groups);
-  try {
-    const result = await chat(customer, session.consent, visible, hiddenByConsent, history, text);
-    for (const a of result.actions) if (a.type === "consent") await writeSession({ persona: session.persona, consent: a.level, iat: session.iat });
-    return Response.json(result, { headers: { "Cache-Control": "no-store, private" } });
-  } catch (err) {
-    console.warn(`[chat] ${err instanceof Error ? err.message : err}`);
-    return Response.json({ error: "Kate couldn't answer just now. Try again." }, { status: 502 });
-  }
-}
-
-export function GET() {
-  return Response.json({ mode: chatEnabled() ? "claude" : "scripted" });
+  const result = chat(customer, session.consent, visible, hiddenByConsent, history, text);
+  for (const a of result.actions) if (a.type === "consent") await writeSession({ persona: session.persona, consent: a.level, iat: session.iat });
+  return Response.json(result, { headers: { "Cache-Control": "no-store, private" } });
 }

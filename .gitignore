@@ -30,10 +30,10 @@ coverage
 .idea
 .vscode
 
-# hackathon material: large PDFs (participants guide ~40 MB), keep local only
-docs/hackathon/*.pdf
+# team docs (research, plan, pitch script, event material): local + Claude Project only, not part of the submission
+docs/
 
-# private team notes (credentials, invite/discount links): share via the Claude Project, not git
+# private notes
 *.private.md
 
 # personal notes (idea shortlists etc.): not for the repo, not for the Claude Project upload
