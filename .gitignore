@@ -48,3 +48,4 @@ android/*.keystore
 android/*.jks
 *.apk
 *.aab
+*.idsig
