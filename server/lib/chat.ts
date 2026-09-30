@@ -1,3 +1,4 @@
+// THE EMULATED AGENT. This is what the phone app talks to (via /api/chat on the Vercel deployment).
 // Kate's conversation in the demo. There is no live AI agent: a keyword classifier maps the customer's
 // message to one of a fixed set of intents, the engine validates the slots, and the reply is rendered
 // from templates over verified facts. Anything outside the allowed intents gets a fixed answer that

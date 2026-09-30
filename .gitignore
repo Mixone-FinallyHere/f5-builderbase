@@ -38,3 +38,13 @@ docs/
 
 # personal notes (idea shortlists etc.): not for the repo, not for the Claude Project upload
 private-notes/
+
+# android (phone app): build outputs, local SDK config and the signing key never go in git
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/*.keystore
+android/*.jks
+*.apk
+*.aab
