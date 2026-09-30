@@ -69,6 +69,7 @@ To add collaborators: **Settings → Collaborators → Add people**.
 ## Hackathon checklist
 
 - [ ] Team formed, roles assigned
+- [x] Challenge chosen: **KBC** (personalisation at scale, see [docs/hackathon/SUMMARY.md](docs/hackathon/SUMMARY.md))
 - [ ] Problem statement agreed (one sentence)
 - [ ] Tagline + project description finalized
 - [ ] Collaborators added to the repo
@@ -78,7 +79,12 @@ To add collaborators: **Settings → Collaborators → Add people**.
 - [ ] Demo script rehearsed + fallback video recorded
 - [ ] Pitch deck filled in (generate with `docs/pitch/build_pitch_deck.py`, see docs/pitch/PITCH-TEMPLATE.md)
 - [ ] README updated with live URL, screenshots, and tagline
-- [ ] Submission form sent before the deadline
+- [ ] Aikido baseline scan screenshotted, issues fixed, "after" screenshotted
+- [ ] Builderbase Overview filled in (all required, editable until the deadline):
+  - [ ] Short description
+  - [ ] Video link (demo under 3 minutes)
+  - [x] GitHub repository link: https://github.com/WhiteChair/f5-builderbase
+  - [ ] Aikido screenshots uploaded
 
 ## License
 

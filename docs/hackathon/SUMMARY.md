@@ -2,9 +2,11 @@
 
 Digest of the official Participants Guide (30 September 2026, 7 locations in Belgium). The PDF itself is local only (gitignored); this file is the text version everyone can use. Event-specific links and team credentials are deliberately left out because this repo is public.
 
-## The challenges (pick one)
+## The challenges
 
-### KBC: personalisation at scale
+**Team F5 is doing the KBC challenge.** SD Worx is kept below for reference.
+
+### KBC: personalisation at scale (our challenge)
 KBC is one of Belgium's largest banks (banking, investment, insurance), with 2,300,000+ customers.
 
 - **Ask:** imagine KBC perfectly understands what customers need and responds at exactly the right moment. First think without constraints (the ideal customer experience), then show how to deliver it to 2.3M customers in a scalable way.
@@ -48,11 +50,14 @@ Only the security weight (10%) is stated; the others aren't.
 
 ## Submission (via the Builderbase platform)
 
-One team member logs in and fills in the fields under **Overview**:
-- [ ] Short description
-- [ ] Demo video, **under 3 minutes**
-- [ ] GitHub repo link (repo must stay **public** until judging is complete)
-- [ ] Aikido screenshots, **before and after**
+One team member fills in the project **Overview** in Builderbase. All fields are required, and they **can be edited any time until the submission deadline**:
+
+| Field | What to provide | Status |
+|---|---|---|
+| Short description | Description of the solution | To do |
+| Video link | Link to our original demo video, **under 3 minutes**, explaining the solution | To do |
+| GitHub repository link | https://github.com/WhiteChair/f5-builderbase (must stay **public**) | Ready |
+| Aikido screenshots (upload) | Screenshots of the Aikido platform, **before and after** fixes | To do |
 
 **The guide gives no deadline.** Check Builderbase for the exact time.
 
@@ -95,6 +100,7 @@ Process:
 
 ## What this means for us
 
+- **Fit for KBC:** show a *vision* (the ideal customer experience) and a *working proof of concept* of how it scales to 2.3M customers. Signals → recognising situation and intent → an experience that adapts automatically across channels.
 - **Fit matters as much as polish.** Both briefs explicitly reject "just another feature" and ask for a *vision plus a working proof of concept*. The demo should show the end-to-end story.
 - **"Does it work?"** The live demo on Vercel and the under-3-minute video are the proof. Keep one golden path rock solid.
 - **Security is designed in, not bolted on:** real per-user authorization on any data (no IDOR), no secrets in git, validated inputs. Run the Aikido baseline **early**, since the before/after screenshots are part of the submission.
